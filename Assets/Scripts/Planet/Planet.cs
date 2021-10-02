@@ -8,11 +8,27 @@ public class Planet : MonoBehaviour
   [Range(2, 256)]
   int resolution = 10;
 
+  public ShapeSettings shapeSettings;
+  public ColorSettings colorSettings;
+
+  ShapeGenerator shapeGenerator;
+
   [SerializeField, HideInInspector]
   MeshFilter[] meshFilters;
   TerrainFace[] terrainFaces;
 
   private void OnValidate()
+  {
+    generatePlanet();
+  }
+
+  public void OnColorSettingsUpdated()
+  {
+    initialize();
+    generateColors();
+  }
+
+  public void OnShapeSettingsUpdated()
   {
     initialize();
     generateMesh();
@@ -20,6 +36,8 @@ public class Planet : MonoBehaviour
 
   void initialize()
   {
+    shapeGenerator = new ShapeGenerator(shapeSettings);
+
     if (meshFilters == null || meshFilters.Length == 0)
     {
       meshFilters = new MeshFilter[6];
@@ -40,8 +58,15 @@ public class Planet : MonoBehaviour
         meshFilters[i].sharedMesh = new Mesh();
       }
 
-      terrainFaces[i] = new TerrainFace(meshFilters[i].sharedMesh, resolution, directions[i]);
+      terrainFaces[i] = new TerrainFace(shapeGenerator, meshFilters[i].sharedMesh, resolution, directions[i]);
     }
+  }
+
+  public void generatePlanet()
+  {
+    initialize();
+    generateMesh();
+    generateColors();
   }
 
   void generateMesh()
@@ -49,6 +74,14 @@ public class Planet : MonoBehaviour
     foreach (TerrainFace face in terrainFaces)
     {
       face.constructMesh();
+    }
+  }
+
+  void generateColors()
+  {
+    foreach (MeshFilter m in meshFilters)
+    {
+      m.GetComponent<MeshRenderer>().sharedMaterial.color = colorSettings.planetColor;
     }
   }
 }
