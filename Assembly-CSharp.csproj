@@ -44,6 +44,9 @@
      <Compile Include="Assets\Scripts\Planet\Noise.cs" />
      <Compile Include="Assets\Scripts\Planet\NoiseFilter.cs" />
      <Compile Include="Assets\Scripts\Planet\NoiseSettings.cs" />
+     <Compile Include="Assets\Scripts\Planet\RigidNoiseFilter.cs" />
+     <Compile Include="Assets\Scripts\Planet\INoiseFilter.cs" />
+     <Compile Include="Assets\Scripts\Planet\NoiseFilterFactory.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/jacinto/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
