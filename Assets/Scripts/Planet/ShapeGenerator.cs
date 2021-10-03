@@ -6,8 +6,9 @@ public class ShapeGenerator
 {
   ShapeSettings settings;
   INoiseFilter[] noiseFilters;
+  public MinMax elevationMinMax;
 
-  public ShapeGenerator(ShapeSettings settings)
+  public void updateSettings(ShapeSettings settings)
   {
     this.settings = settings;
     noiseFilters = new INoiseFilter[settings.noiseLayers.Length];
@@ -15,6 +16,8 @@ public class ShapeGenerator
     {
       noiseFilters[i] = NoiseFilterFactory.createNoiseFilter(settings.noiseLayers[i].noiseSettings);
     }
+
+    elevationMinMax = new MinMax();
   }
 
   public Vector3 calculatePointOnPlanet(Vector3 pointOnUnitSphere)
@@ -39,6 +42,8 @@ public class ShapeGenerator
         elevation += noiseFilters[i].evaluate(pointOnUnitSphere) * mask;
       }
     }
-    return pointOnUnitSphere * settings.planetRadius * (1 + elevation);
+    elevation = settings.planetRadius * (1 + elevation);
+    elevationMinMax.addValue(elevation);
+    return pointOnUnitSphere * elevation;
   }
 }

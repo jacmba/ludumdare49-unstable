@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f10da30918b2cf86ad284797ddfd2d5, type: 3}
   m_Name: ShapeSetting
   m_EditorClassIdentifier: 
-  planetRadius: 2.72
+  planetRadius: 1.5
   noiseLayers:
   - enabled: 1
     useFirstLayerAsMask: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
       persistence: 0.55
       roughness: 2.5
       center: {x: 0, y: 0, z: 0}
-      minValue: 1.06
+      minValue: 1.1
   - enabled: 1
     useFirstLayerAsMask: 1
     noiseSettings:
