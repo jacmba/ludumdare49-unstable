@@ -41,6 +41,9 @@
      <Compile Include="Assets\Scripts\Planet\ShapeSettings.cs" />
      <Compile Include="Assets\Scripts\Planet\ColorSettings.cs" />
      <Compile Include="Assets\Scripts\Planet\ShapeGenerator.cs" />
+     <Compile Include="Assets\Scripts\Planet\Noise.cs" />
+     <Compile Include="Assets\Scripts\Planet\NoiseFilter.cs" />
+     <Compile Include="Assets\Scripts\Planet\NoiseSettings.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/jacinto/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
