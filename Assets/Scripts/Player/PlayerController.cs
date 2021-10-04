@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    movDir = Vector3.forward * Input.GetAxis("Vertical");
+    movDir = (Vector3.forward * Input.GetAxis("Vertical")).normalized;
     rotDir = Vector3.up * Input.GetAxis("Horizontal");
   }
 

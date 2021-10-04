@@ -18,6 +18,6 @@ public class CamController : MonoBehaviour
   void Update()
   {
     transform.position = spot.position;
-    transform.LookAt(target);
+    transform.rotation = spot.rotation;
   }
 }
