@@ -12,18 +12,21 @@ public class PlayerController : MonoBehaviour
 
   private Rigidbody body;
   private Vector3 movDir;
+  private Vector3 rotDir;
 
   // Start is called before the first frame update
   void Start()
   {
     body = GetComponent<Rigidbody>();
     movDir = Vector3.zero;
+    rotDir = Vector3.zero;
   }
 
   // Update is called once per frame
   void Update()
   {
     movDir = Vector3.forward * Input.GetAxis("Vertical");
+    rotDir = Vector3.up * Input.GetAxis("Horizontal");
   }
 
   /// <summary>
@@ -31,6 +34,9 @@ public class PlayerController : MonoBehaviour
   /// </summary>
   void FixedUpdate()
   {
-    body.MovePosition(body.position + movDir * movSpeed * Time.deltaTime);
+    body.MovePosition(body.position + transform.TransformDirection(movDir) * movSpeed * Time.deltaTime);
+
+    Quaternion rotation = Quaternion.Euler(rotDir * rotSpeed * Time.deltaTime).normalized;
+    body.MoveRotation(body.rotation * rotation);
   }
 }
