@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f10da30918b2cf86ad284797ddfd2d5, type: 3}
+  m_Name: BluePlanetShapeSettings
+  m_EditorClassIdentifier: 
+  planetRadius: 500
+  noiseLayers:
+  - enabled: 1
+    useFirstLayerAsMask: 0
+    noiseSettings:
+      filterType: 0
+      strength: 1
+      numLayers: 4
+      baseRoughness: 0.1
+      persistence: 0.1
+      roughness: 2
+      center: {x: 0, y: 0, z: 0}
+      minValue: 0.9
+  - enabled: 1
+    useFirstLayerAsMask: 1
+    noiseSettings:
+      filterType: 0
+      strength: 3
+      numLayers: 4
+      baseRoughness: 2
+      persistence: 0.5
+      roughness: 4
+      center: {x: 0, y: 0, z: 0}
+      minValue: 0.9
