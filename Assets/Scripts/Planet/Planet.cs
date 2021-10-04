@@ -101,7 +101,7 @@ public class Planet : MonoBehaviour
 
     colorGenerator.updateElevation(shapeGenerator.elevationMinMax);
 
-    planetMass = 1000f * shapeSettings.planetRadius;
+    planetMass = 6 * (float)10e10 * shapeSettings.planetRadius;
   }
 
   void generateColors()

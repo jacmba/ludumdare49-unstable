@@ -6,6 +6,7 @@ using UnityEngine;
 public class GravityAttractor : MonoBehaviour
 {
   private const float GRAVITY = -9.8f;
+  private const float G = (float)(6.67428f * 10e-11);
   private Planet planet;
 
   // Start is called before the first frame update
@@ -21,6 +22,13 @@ public class GravityAttractor : MonoBehaviour
     Rigidbody rb = body.GetComponent<Rigidbody>();
 
     float attractionForce = GRAVITY * rb.mass;
+    if (planet != null)
+    {
+      attractionForce *= planet.planetMass;
+    }
+    attractionForce *= G;
+    float delta2 = (transform.position - body.position).sqrMagnitude;
+    attractionForce /= delta2;
     rb.AddForce(gravityUp * attractionForce);
 
     Quaternion targetRotation = Quaternion.FromToRotation(bodyUp, gravityUp) * body.rotation;
