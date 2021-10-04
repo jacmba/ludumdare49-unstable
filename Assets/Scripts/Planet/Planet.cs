@@ -11,6 +11,8 @@ public class Planet : MonoBehaviour
   public ShapeSettings shapeSettings;
   public ColorSettings colorSettings;
 
+  public float planetMass { get; private set; }
+
   public enum FaceRenderMask
   {
     All,
@@ -72,6 +74,7 @@ public class Planet : MonoBehaviour
         meshFilters[i].sharedMesh = new Mesh();
       }
       meshFilters[i].GetComponent<MeshRenderer>().sharedMaterial = colorSettings.planetMaterial;
+      meshFilters[i].gameObject.AddComponent<MeshCollider>();
 
       terrainFaces[i] = new TerrainFace(shapeGenerator, meshFilters[i].sharedMesh, resolution, directions[i]);
       bool renderFace = faceRenderMask == FaceRenderMask.All || (int)faceRenderMask - 1 == i;
@@ -97,6 +100,8 @@ public class Planet : MonoBehaviour
     }
 
     colorGenerator.updateElevation(shapeGenerator.elevationMinMax);
+
+    planetMass = 1000f * shapeSettings.planetRadius;
   }
 
   void generateColors()
