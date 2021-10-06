@@ -53,6 +53,8 @@
      <Compile Include="Assets\Scripts\Planet\Noise.cs" />
      <Compile Include="Assets\Scripts\Planet\NoiseFilterFactory.cs" />
      <Compile Include="Assets\Scripts\Planet\INoiseFilter.cs" />
+     <Compile Include="Assets\Scripts\Misc\EventBus.cs" />
+     <Compile Include="Assets\Scripts\Misc\GameController.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/jacinto/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
