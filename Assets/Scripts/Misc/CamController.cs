@@ -4,14 +4,25 @@ using UnityEngine;
 
 public class CamController : MonoBehaviour
 {
-  [SerializeField]
+  [SerializeField] private Transform playerSpot;
+  [SerializeField] private Transform rocketStillSpot;
+  [SerializeField] private Transform rocketChaseSpot;
   private Transform spot;
   private Transform target;
 
   // Start is called before the first frame update
   void Start()
   {
-    target = spot.parent;
+    changeSpot(playerSpot);
+
+    EventBus.OnRocketEnter += OnRocketEnter;
+    EventBus.OnRocketExit += OnRocketExit;
+  }
+
+  void OnDestroy()
+  {
+    EventBus.OnRocketEnter -= OnRocketEnter;
+    EventBus.OnRocketExit -= OnRocketExit;
   }
 
   // Update is called once per frame
@@ -19,5 +30,21 @@ public class CamController : MonoBehaviour
   {
     transform.position = spot.position;
     transform.rotation = spot.rotation;
+  }
+
+  private void changeSpot(Transform s)
+  {
+    spot = s;
+    target = spot.parent;
+  }
+
+  private void OnRocketEnter()
+  {
+    changeSpot(rocketStillSpot);
+  }
+
+  private void OnRocketExit()
+  {
+    changeSpot(playerSpot);
   }
 }

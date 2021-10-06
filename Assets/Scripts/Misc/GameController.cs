@@ -6,12 +6,16 @@ public class GameController : MonoBehaviour
 {
   [SerializeField] private GameObject player;
   [SerializeField] private GameObject rocket;
+  private RocketController rocketController;
+  private Transform exitPoint;
 
   // Start is called before the first frame update
   void Start()
   {
     EventBus.OnRocketEnter += onRockenter;
     EventBus.OnRocketExit += onRocketExit;
+    rocketController = rocket.GetComponent<RocketController>();
+    exitPoint = rocket.transform.Find("ExitPoint");
   }
 
   /// <summary>
@@ -26,7 +30,13 @@ public class GameController : MonoBehaviour
   void onRockenter()
   {
     player.SetActive(false);
+    rocketController.enabled = true;
   }
 
-  void onRocketExit() { }
+  void onRocketExit()
+  {
+    rocketController.enabled = false;
+    player.transform.position = exitPoint.position;
+    player.SetActive(true);
+  }
 }

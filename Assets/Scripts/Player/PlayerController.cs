@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -13,6 +14,15 @@ public class PlayerController : MonoBehaviour
   private Rigidbody body;
   private Vector3 movDir;
   private Vector3 rotDir;
+  private bool canDo;
+
+  public enum AreaType
+  {
+    NONE,
+    ROCKET
+  }
+
+  private AreaType areaType;
 
   // Start is called before the first frame update
   void Start()
@@ -20,6 +30,8 @@ public class PlayerController : MonoBehaviour
     body = GetComponent<Rigidbody>();
     movDir = Vector3.zero;
     rotDir = Vector3.zero;
+    areaType = AreaType.NONE;
+    canDo = true;
   }
 
   // Update is called once per frame
@@ -27,6 +39,17 @@ public class PlayerController : MonoBehaviour
   {
     movDir = (Vector3.forward * Input.GetAxis("Vertical")).normalized;
     rotDir = Vector3.up * Input.GetAxis("Horizontal");
+
+    if (Input.GetButtonUp("Fire1"))
+    {
+      canDo = true;
+    }
+
+    if (Input.GetButtonDown("Fire1") && canDo)
+    {
+      canDo = false;
+      doStuff();
+    }
   }
 
   /// <summary>
@@ -38,5 +61,35 @@ public class PlayerController : MonoBehaviour
 
     Quaternion rotation = Quaternion.Euler(rotDir * rotSpeed * Time.deltaTime).normalized;
     body.MoveRotation(body.rotation * rotation);
+  }
+
+  void OnTriggerEnter(Collider other)
+  {
+    switch (other.name)
+    {
+      case "Cobete":
+        areaType = AreaType.ROCKET;
+        break;
+      default:
+        areaType = AreaType.NONE;
+        break;
+    }
+  }
+
+  void OnTriggerExit(Collider other)
+  {
+    areaType = AreaType.NONE;
+  }
+
+  private void doStuff()
+  {
+    switch (areaType)
+    {
+      case AreaType.ROCKET:
+        EventBus.enterRocket();
+        break;
+      default:
+        break;
+    }
   }
 }
