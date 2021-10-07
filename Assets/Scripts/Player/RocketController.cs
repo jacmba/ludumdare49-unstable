@@ -63,7 +63,7 @@ public class RocketController : MonoBehaviour
       EventBus.liftOff();
     }
 
-    transform.Rotate(rotDir, Space.Self);
+    transform.Rotate(rotDir * rotSpeed * Time.deltaTime, Space.Self);
     body.rotation = transform.rotation;
   }
 }

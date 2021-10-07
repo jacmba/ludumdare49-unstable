@@ -59,8 +59,7 @@ public class PlayerController : MonoBehaviour
   {
     body.MovePosition(body.position + transform.TransformDirection(movDir) * movSpeed * Time.deltaTime);
 
-    Quaternion rotation = Quaternion.Euler(rotDir * rotSpeed * Time.deltaTime).normalized;
-    body.MoveRotation(body.rotation * rotation);
+    transform.Rotate(rotDir * rotSpeed * Time.deltaTime);
   }
 
   void OnTriggerEnter(Collider other)
