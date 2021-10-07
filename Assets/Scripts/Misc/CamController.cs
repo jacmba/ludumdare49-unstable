@@ -7,8 +7,9 @@ public class CamController : MonoBehaviour
   [SerializeField] private Transform playerSpot;
   [SerializeField] private Transform rocketStillSpot;
   [SerializeField] private Transform rocketChaseSpot;
-  [SerializeField] private float translateSpeed = 20f;
-  [SerializeField] private float rotationSpeed = 35f;
+  [SerializeField] private Transform landSpot;
+  [SerializeField] private float translateSpeed = 2f;
+  [SerializeField] private float rotationSpeed = 5f;
   private Transform spot;
   private Transform target;
 
@@ -20,6 +21,7 @@ public class CamController : MonoBehaviour
     EventBus.OnRocketEnter += OnRocketEnter;
     EventBus.OnRocketExit += OnRocketExit;
     EventBus.OnLitfOff += OnLiftOff;
+    EventBus.OnRocketLanding += OnRocketLanding;
   }
 
   void OnDestroy()
@@ -27,6 +29,7 @@ public class CamController : MonoBehaviour
     EventBus.OnRocketEnter -= OnRocketEnter;
     EventBus.OnRocketExit -= OnRocketExit;
     EventBus.OnLitfOff -= OnLiftOff;
+    EventBus.OnRocketLanding -= OnRocketLanding;
   }
 
   // Update is called once per frame
@@ -61,5 +64,10 @@ public class CamController : MonoBehaviour
   private void OnLiftOff()
   {
     changeSpot(rocketChaseSpot);
+  }
+
+  private void OnRocketLanding()
+  {
+    changeSpot(landSpot);
   }
 }

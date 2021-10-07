@@ -66,7 +66,8 @@ public class Planet : MonoBehaviour
     {
       if (meshFilters[i] == null)
       {
-        GameObject meshObj = new GameObject("mesh");
+        GameObject meshObj = new GameObject("planet mesh");
+        meshObj.tag = "Planet";
         meshObj.transform.parent = transform;
 
         meshObj.AddComponent<MeshRenderer>();

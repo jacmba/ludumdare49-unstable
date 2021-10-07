@@ -8,6 +8,7 @@ public static class EventBus
   public static event Action OnRocketEnter;
   public static event Action OnRocketExit;
   public static event Action OnLitfOff;
+  public static event Action OnRocketLanding;
 
   public static void enterRocket()
   {
@@ -22,5 +23,10 @@ public static class EventBus
   public static void liftOff()
   {
     OnLitfOff?.Invoke();
+  }
+
+  public static void landRocket()
+  {
+    OnRocketLanding?.Invoke();
   }
 }

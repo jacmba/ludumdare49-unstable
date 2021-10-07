@@ -11,11 +11,20 @@ public class RocketController : MonoBehaviour
   [SerializeField] private float thrustRate = 100f;
   [SerializeField] private float rotSpeed = 90f;
   private Vector3 rotDir;
-  private bool liftOff;
+  private float vs;
+
+  public enum RocketStatus
+  {
+    GROUNDED,
+    FLIGHT,
+    LANDING
+  }
+  private RocketStatus status;
 
   void Awake()
   {
     gravityBody = GetComponent<GravityBody>();
+    status = RocketStatus.GROUNDED;
   }
 
   void OnEnable()
@@ -23,7 +32,6 @@ public class RocketController : MonoBehaviour
     body = GetComponent<Rigidbody>();
     canExit = false;
     gravityBody.enabled = false;
-    liftOff = false;
   }
 
   void OnDisable()
@@ -41,7 +49,18 @@ public class RocketController : MonoBehaviour
 
     if (Input.GetButtonDown("Fire1") && canExit)
     {
-      EventBus.exitRocket();
+      canExit = false;
+      switch (status)
+      {
+        case RocketStatus.GROUNDED:
+          EventBus.exitRocket();
+          break;
+        case RocketStatus.FLIGHT:
+          status = RocketStatus.LANDING;
+          gravityBody.enabled = true;
+          EventBus.landRocket();
+          break;
+      }
     }
 
     thrust = Input.GetAxis("Fire2");
@@ -55,15 +74,40 @@ public class RocketController : MonoBehaviour
 
   void FixedUpdate()
   {
-    body.AddForce(transform.up * thrust * thrustRate * Time.deltaTime);
-
-    if (thrust > 0.5f && body.velocity.magnitude > 3f && !liftOff)
+    if (thrust > 0.5f && body.velocity.magnitude > 2f && status == RocketStatus.GROUNDED)
     {
-      liftOff = true;
+      status = RocketStatus.FLIGHT;
       EventBus.liftOff();
     }
 
-    transform.Rotate(rotDir * rotSpeed * Time.deltaTime, Space.Self);
-    body.rotation = transform.rotation;
+    if (status != RocketStatus.LANDING)
+    {
+      if (gravityBody.enabled)
+      {
+        gravityBody.enabled = false;
+      }
+      body.AddForce(transform.up * thrust * thrustRate * Time.deltaTime);
+
+      if (status == RocketStatus.FLIGHT)
+      {
+        transform.Rotate(rotDir * rotSpeed * Time.deltaTime, Space.Self);
+        body.rotation = transform.rotation;
+      }
+    }
+
+    vs = body.velocity.y;
+    Debug.Log(vs);
+  }
+
+  void OnCollisionEnter(Collision other)
+  {
+    if (!enabled)
+    {
+      return;
+    }
+    if (other.gameObject.tag == "Planet")
+    {
+      status = RocketStatus.GROUNDED;
+    }
   }
 }

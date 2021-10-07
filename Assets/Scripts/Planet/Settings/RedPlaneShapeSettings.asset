@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f10da30918b2cf86ad284797ddfd2d5, type: 3}
   m_Name: RedPlaneShapeSettings
   m_EditorClassIdentifier: 
-  planetRadius: 30
+  planetRadius: 20
   noiseLayers:
   - enabled: 1
     useFirstLayerAsMask: 0
