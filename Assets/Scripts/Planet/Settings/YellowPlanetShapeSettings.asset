@@ -21,18 +21,29 @@ MonoBehaviour:
       strength: 0.5
       numLayers: 4
       baseRoughness: 0.1
-      persistence: 0.2
+      persistence: 0.1
       roughness: 1
       center: {x: 0, y: 0, z: 0}
       minValue: 0.1
   - enabled: 1
     useFirstLayerAsMask: 1
     noiseSettings:
-      filterType: 1
-      strength: 1.69
-      numLayers: 5
-      baseRoughness: 2.45
+      filterType: 0
+      strength: 0.75
+      numLayers: 4
+      baseRoughness: 1
       persistence: 0.1
+      roughness: 10
+      center: {x: 0, y: 0, z: 0}
+      minValue: 1
+  - enabled: 1
+    useFirstLayerAsMask: 1
+    noiseSettings:
+      filterType: 1
+      strength: 1
+      numLayers: 5
+      baseRoughness: 1
+      persistence: 0.2
       roughness: 50
       center: {x: 0, y: 0, z: 0}
-      minValue: 0.78
+      minValue: 0.8
