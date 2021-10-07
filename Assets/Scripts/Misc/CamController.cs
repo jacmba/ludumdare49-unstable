@@ -7,6 +7,8 @@ public class CamController : MonoBehaviour
   [SerializeField] private Transform playerSpot;
   [SerializeField] private Transform rocketStillSpot;
   [SerializeField] private Transform rocketChaseSpot;
+  [SerializeField] private float translateSpeed = 20f;
+  [SerializeField] private float rotationSpeed = 35f;
   private Transform spot;
   private Transform target;
 
@@ -30,8 +32,14 @@ public class CamController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    transform.position = spot.position;
-    transform.rotation = spot.rotation;
+    float dist = Mathf.Abs((transform.position - spot.position).magnitude);
+    Vector3 targetPos = dist > translateSpeed ?
+      Vector3.Lerp(transform.position, spot.position, translateSpeed * Time.deltaTime) :
+      spot.position;
+    transform.position = targetPos;
+
+    Quaternion targetRot = Quaternion.Slerp(transform.rotation, spot.rotation, rotationSpeed * Time.deltaTime);
+    transform.rotation = targetRot;
   }
 
   private void changeSpot(Transform s)
