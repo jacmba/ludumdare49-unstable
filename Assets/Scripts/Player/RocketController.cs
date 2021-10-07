@@ -11,6 +11,7 @@ public class RocketController : MonoBehaviour
   [SerializeField] private float thrustRate = 100f;
   [SerializeField] private float rotSpeed = 90f;
   private Vector3 rotDir;
+  private bool liftOff;
 
   void Awake()
   {
@@ -22,6 +23,7 @@ public class RocketController : MonoBehaviour
     body = GetComponent<Rigidbody>();
     canExit = false;
     gravityBody.enabled = false;
+    liftOff = false;
   }
 
   void OnDisable()
@@ -54,6 +56,12 @@ public class RocketController : MonoBehaviour
   void FixedUpdate()
   {
     body.AddForce(transform.up * thrust * thrustRate * Time.deltaTime);
+
+    if (thrust > 0.5f && body.velocity.magnitude > 3f && !liftOff)
+    {
+      liftOff = true;
+      EventBus.liftOff();
+    }
 
     transform.Rotate(rotDir, Space.Self);
     body.rotation = transform.rotation;

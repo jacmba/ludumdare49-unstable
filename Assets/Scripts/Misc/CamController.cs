@@ -17,12 +17,14 @@ public class CamController : MonoBehaviour
 
     EventBus.OnRocketEnter += OnRocketEnter;
     EventBus.OnRocketExit += OnRocketExit;
+    EventBus.OnLitfOff += OnLiftOff;
   }
 
   void OnDestroy()
   {
     EventBus.OnRocketEnter -= OnRocketEnter;
     EventBus.OnRocketExit -= OnRocketExit;
+    EventBus.OnLitfOff -= OnLiftOff;
   }
 
   // Update is called once per frame
@@ -46,5 +48,10 @@ public class CamController : MonoBehaviour
   private void OnRocketExit()
   {
     changeSpot(playerSpot);
+  }
+
+  private void OnLiftOff()
+  {
+    changeSpot(rocketChaseSpot);
   }
 }
