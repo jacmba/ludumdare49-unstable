@@ -12,6 +12,8 @@ public class RocketController : MonoBehaviour
   [SerializeField] private float rotSpeed = 90f;
   private Vector3 rotDir;
   private float vs;
+  private float radioAlt;
+  private Transform altSensor;
 
   public enum RocketStatus
   {
@@ -25,6 +27,8 @@ public class RocketController : MonoBehaviour
   {
     gravityBody = GetComponent<GravityBody>();
     status = RocketStatus.GROUNDED;
+    radioAlt = 0f;
+    altSensor = transform.Find("AltSensor");
   }
 
   void OnEnable()
@@ -56,9 +60,12 @@ public class RocketController : MonoBehaviour
           EventBus.exitRocket();
           break;
         case RocketStatus.FLIGHT:
-          status = RocketStatus.LANDING;
-          gravityBody.enabled = true;
-          EventBus.landRocket();
+          if (radioAlt < 100f)
+          {
+            status = RocketStatus.LANDING;
+            gravityBody.enabled = true;
+            EventBus.landRocket();
+          }
           break;
       }
     }
@@ -74,7 +81,7 @@ public class RocketController : MonoBehaviour
 
   void FixedUpdate()
   {
-    if (thrust > 0.5f && body.velocity.magnitude > 2f && status == RocketStatus.GROUNDED)
+    if (body.velocity.magnitude > .1f && status == RocketStatus.GROUNDED && radioAlt > .2f)
     {
       status = RocketStatus.FLIGHT;
       EventBus.liftOff();
@@ -94,9 +101,27 @@ public class RocketController : MonoBehaviour
         body.rotation = transform.rotation;
       }
     }
+    else
+    {
+      Vector3 vel = body.velocity;
+      vel.x = 0f;
+      vel.z = 0f;
+      if (radioAlt < 10f && vs < -1f)
+      {
+        vel.y = -1f;
+      }
+      body.velocity = vel;
+    }
 
     vs = body.velocity.y;
-    Debug.Log(vs);
+
+    RaycastHit hit;
+    bool isHit = Physics.Raycast(altSensor.position, transform.TransformDirection(Vector3.down), out hit, 200f);
+    if (isHit)
+    {
+      radioAlt = hit.distance;
+    }
+    Debug.Log("Radio altimeter: " + radioAlt);
   }
 
   void OnCollisionEnter(Collision other)
@@ -108,6 +133,7 @@ public class RocketController : MonoBehaviour
     if (other.gameObject.tag == "Planet")
     {
       status = RocketStatus.GROUNDED;
+      body.velocity = Vector3.zero;
     }
   }
 }
