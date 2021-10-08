@@ -12,10 +12,12 @@ public class CamController : MonoBehaviour
   [SerializeField] private float rotationSpeed = 5f;
   private Transform spot;
   private Transform target;
+  private bool transition;
 
   // Start is called before the first frame update
   void Start()
   {
+    transition = false;
     changeSpot(playerSpot);
 
     EventBus.OnRocketEnter += OnRocketEnter;
@@ -36,17 +38,21 @@ public class CamController : MonoBehaviour
   void Update()
   {
     float dist = Mathf.Abs((transform.position - spot.position).magnitude);
-    Vector3 targetPos = dist > translateSpeed ?
+    if (dist < .5f)
+    {
+      transition = false;
+    }
+    Vector3 targetPos = dist > translateSpeed && transition ?
       Vector3.Lerp(transform.position, spot.position, translateSpeed * Time.deltaTime) :
       spot.position;
     transform.position = targetPos;
 
-    Quaternion targetRot = Quaternion.Slerp(transform.rotation, spot.rotation, rotationSpeed * Time.deltaTime);
-    transform.rotation = targetRot;
+    transform.rotation = spot.rotation;
   }
 
   private void changeSpot(Transform s)
   {
+    transition = true;
     spot = s;
     target = spot.parent;
   }
