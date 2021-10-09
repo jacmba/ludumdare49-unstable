@@ -104,10 +104,10 @@ public class RocketController : MonoBehaviour
     else
     {
       Vector3 vel = body.velocity;
-      vel.x = 0f;
-      vel.z = 0f;
       if (radioAlt < 10f && vs < -1f)
       {
+        vel.x = 0f;
+        vel.z = 0f;
         vel.y = -1f;
       }
       body.velocity = vel;
@@ -121,7 +121,6 @@ public class RocketController : MonoBehaviour
     {
       radioAlt = hit.distance;
     }
-    Debug.Log("Radio altimeter: " + radioAlt);
   }
 
   void OnCollisionEnter(Collision other)

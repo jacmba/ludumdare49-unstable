@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [RequireComponent(typeof(Rigidbody))]
 public class GravityBody : MonoBehaviour
@@ -20,18 +21,10 @@ public class GravityBody : MonoBehaviour
 
   void Update()
   {
-    Transform closest = null;
-    float minDist = float.MaxValue;
-
-    foreach (GameObject planet in attractors)
-    {
-      float dist = Mathf.Abs((planet.transform.position - transform.position).magnitude);
-      if (dist < minDist)
-      {
-        closest = planet.transform;
-        minDist = dist;
-      }
-    }
+    Transform closest = attractors
+      .Select(o => o.transform)
+      .OrderBy(t => Vector3.Distance(transform.position, t.position))
+      .FirstOrDefault();
 
     currentAttractor = closest.GetComponent<GravityAttractor>();
   }

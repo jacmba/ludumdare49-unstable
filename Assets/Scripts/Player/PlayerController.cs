@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
   private Vector3 movDir;
   private Vector3 rotDir;
   private bool canDo;
+  private List<ItemController.ItemType> inventory;
 
   public enum AreaType
   {
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
+    inventory = new List<ItemController.ItemType>();
     body = GetComponent<Rigidbody>();
     movDir = Vector3.zero;
     rotDir = Vector3.zero;
@@ -68,6 +70,15 @@ public class PlayerController : MonoBehaviour
     {
       case "Cobete":
         areaType = AreaType.ROCKET;
+        break;
+      case "Item":
+        GameObject item = other.gameObject;
+        if (inventory.Count == 0)
+        {
+          ItemController itemController = item.GetComponent<ItemController>();
+          GameObject.Destroy(item);
+          inventory.Add(itemController.type);
+        }
         break;
       default:
         areaType = AreaType.NONE;
