@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class ItemFactory
 {
-  public static GameObject build(Transform point, ItemController.ItemType type)
+  public static GameObject build(Transform point, ItemController.ItemType type, bool released = false)
   {
     GameObject itemPefab = Resources.Load<GameObject>("Prefabs/Item");
     GameObject item = GameObject.Instantiate(itemPefab, point.position, Quaternion.identity);
@@ -12,6 +12,7 @@ public static class ItemFactory
     item.transform.parent = point;
     ItemController controller = item.GetComponent<ItemController>();
     controller.type = type;
+    controller.released = released;
     return item;
   }
 }

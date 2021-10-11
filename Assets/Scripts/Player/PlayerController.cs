@@ -15,12 +15,14 @@ public class PlayerController : MonoBehaviour
   private Vector3 movDir;
   private Vector3 rotDir;
   private bool canDo;
-  private List<ItemController.ItemType> inventory;
+  public List<ItemController.ItemType> inventory;
+  private Transform launchSpot;
 
   public enum AreaType
   {
     NONE,
-    ROCKET
+    ROCKET,
+    VULCANO
   }
 
   private AreaType areaType;
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
     rotDir = Vector3.zero;
     areaType = AreaType.NONE;
     canDo = true;
+    launchSpot = transform.Find("LaunchSpot");
   }
 
   // Update is called once per frame
@@ -76,9 +79,15 @@ public class PlayerController : MonoBehaviour
         if (inventory.Count == 0)
         {
           ItemController itemController = item.GetComponent<ItemController>();
-          GameObject.Destroy(item);
-          inventory.Add(itemController.type);
+          if (!itemController.released)
+          {
+            GameObject.Destroy(item);
+            inventory.Add(itemController.type);
+          }
         }
+        break;
+      case "VulcanoArea":
+        areaType = AreaType.VULCANO;
         break;
       default:
         areaType = AreaType.NONE;
@@ -98,8 +107,21 @@ public class PlayerController : MonoBehaviour
       case AreaType.ROCKET:
         EventBus.enterRocket();
         break;
+      case AreaType.VULCANO:
+        if (inventory.Count > 0)
+        {
+          launchItem();
+        }
+        break;
       default:
         break;
     }
+  }
+
+  public void launchItem()
+  {
+    GameObject item = ItemFactory.build(launchSpot, inventory[0], true);
+    item.transform.parent = null;
+    inventory.RemoveAt(0);
   }
 }

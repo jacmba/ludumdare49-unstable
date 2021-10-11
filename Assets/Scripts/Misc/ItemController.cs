@@ -21,7 +21,14 @@ public class ItemController : MonoBehaviour
   }
 
   public ItemType type;
+  public bool released;
   private Vector3 rotation;
+  private Rigidbody rb;
+  private GravityBody body;
+  private Transform vulcanoEntry;
+  private bool launching;
+
+  private const float LAUNCH_SPEED = 10f;
 
   [SerializeField] private List<ColorMap> colorMap;
 
@@ -41,12 +48,34 @@ public class ItemController : MonoBehaviour
     {
       label.text = getSymbol();
     }
+
+    rb = GetComponent<Rigidbody>();
+    body = GetComponent<GravityBody>();
+    Collider collider = GetComponent<Collider>();
+
+    body.enabled = false;
+    rb.constraints = RigidbodyConstraints.FreezeRotation;
+    rb.useGravity = false;
+
+    if (released)
+    {
+      GameObject vulcano = GameObject.FindGameObjectWithTag("Vulcano");
+      vulcanoEntry = vulcano.transform.Find("VulcanoEntry");
+      collider.isTrigger = false;
+
+      Vector3 direction = transform.position - vulcanoEntry.position;
+      transform.rotation = Quaternion.Euler(direction);
+      rb.velocity = Vector3.forward * LAUNCH_SPEED;
+    }
   }
 
   // Update is called once per frame
   void Update()
   {
-    transform.Rotate(rotation, Space.Self);
+    if (!released)
+    {
+      transform.Rotate(rotation, Space.Self);
+    }
   }
 
   public string getSymbol() =>
