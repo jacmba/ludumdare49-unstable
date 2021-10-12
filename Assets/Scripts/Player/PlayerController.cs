@@ -63,7 +63,6 @@ public class PlayerController : MonoBehaviour
   void FixedUpdate()
   {
     body.MovePosition(body.position + transform.TransformDirection(movDir) * movSpeed * Time.deltaTime);
-
     transform.Rotate(rotDir * rotSpeed * Time.deltaTime);
   }
 
@@ -83,11 +82,13 @@ public class PlayerController : MonoBehaviour
           {
             GameObject.Destroy(item);
             inventory.Add(itemController.type);
+            EventBus.collectItem(itemController.type);
           }
         }
         break;
       case "VulcanoArea":
         areaType = AreaType.VULCANO;
+        EventBus.enterVulcano();
         break;
       default:
         areaType = AreaType.NONE;
@@ -123,5 +124,17 @@ public class PlayerController : MonoBehaviour
     GameObject item = ItemFactory.build(launchSpot, inventory[0], true);
     item.transform.parent = null;
     inventory.RemoveAt(0);
+  }
+
+  public ItemController.ItemType checkInventory()
+  {
+    if (inventory.Count > 0)
+    {
+      return inventory[0];
+    }
+    else
+    {
+      return ItemController.ItemType.NONE;
+    }
   }
 }

@@ -7,7 +7,8 @@ public class ItemController : MonoBehaviour
 {
   public enum ItemType
   {
-    CARBON,
+    NONE = -1,
+    CARBON = 0,
     OXYGEN,
     NITROGEN,
     HYDROGEN
@@ -28,7 +29,7 @@ public class ItemController : MonoBehaviour
   private Transform vulcanoEntry;
   private bool launching;
 
-  private const float LAUNCH_SPEED = 10f;
+  private const float LAUNCH_SPEED = 1f;
 
   [SerializeField] private List<ColorMap> colorMap;
 
@@ -51,7 +52,7 @@ public class ItemController : MonoBehaviour
 
     rb = GetComponent<Rigidbody>();
     body = GetComponent<GravityBody>();
-    Collider collider = GetComponent<Collider>();
+    BoxCollider collider = GetComponent<BoxCollider>();
 
     body.enabled = false;
     rb.constraints = RigidbodyConstraints.FreezeRotation;
@@ -62,19 +63,43 @@ public class ItemController : MonoBehaviour
       GameObject vulcano = GameObject.FindGameObjectWithTag("Vulcano");
       vulcanoEntry = vulcano.transform.Find("VulcanoEntry");
       collider.isTrigger = false;
+      collider.size = collider.size / 2;
 
-      Vector3 direction = transform.position - vulcanoEntry.position;
-      transform.rotation = Quaternion.Euler(direction);
-      rb.velocity = Vector3.forward * LAUNCH_SPEED;
+      launching = true;
     }
   }
 
   // Update is called once per frame
   void Update()
   {
-    if (!released)
+    transform.Rotate(rotation, Space.Self);
+
+    if (launching)
     {
-      transform.Rotate(rotation, Space.Self);
+      float dist = Vector3.Distance(transform.position, vulcanoEntry.position);
+      if (dist < LAUNCH_SPEED)
+      {
+        launching = false;
+        body.enabled = true;
+      }
+    }
+  }
+
+  void FixedUpdate()
+  {
+    if (launching)
+    {
+      Vector3 movement = Vector3.Lerp(rb.position, vulcanoEntry.position, LAUNCH_SPEED * Time.deltaTime);
+      rb.position = movement;
+    }
+  }
+
+  void OnTriggerEnter(Collider other)
+  {
+    if (other.name == "VulcanoMouth")
+    {
+      EventBus.dropItem(type);
+      Destroy(gameObject);
     }
   }
 

@@ -9,6 +9,9 @@ public static class EventBus
   public static event Action OnRocketExit;
   public static event Action OnLitfOff;
   public static event Action OnRocketLanding;
+  public static event Action OnVulcanoEntered;
+  public static event Action<ItemController.ItemType> OnItemCollected;
+  public static event Action<ItemController.ItemType> OnItemDropped;
 
   public static void enterRocket()
   {
@@ -28,5 +31,20 @@ public static class EventBus
   public static void landRocket()
   {
     OnRocketLanding?.Invoke();
+  }
+
+  public static void collectItem(ItemController.ItemType type)
+  {
+    OnItemCollected?.Invoke(type);
+  }
+
+  public static void dropItem(ItemController.ItemType type)
+  {
+    OnItemDropped?.Invoke(type);
+  }
+
+  public static void enterVulcano()
+  {
+    OnVulcanoEntered?.Invoke();
   }
 }
