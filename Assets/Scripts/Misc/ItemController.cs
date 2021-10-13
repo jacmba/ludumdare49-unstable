@@ -113,6 +113,11 @@ public class ItemController : MonoBehaviour
       _ => ""
     };
 
+  public Color getColor()
+  {
+    return colorMap[(int)type].color;
+  }
+
   public float rand()
   {
     return Random.Range(-2f, 2f);

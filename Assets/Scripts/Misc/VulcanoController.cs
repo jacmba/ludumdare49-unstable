@@ -39,6 +39,7 @@ public class VulcanoController : MonoBehaviour
         demand = (ItemController.ItemType)Random.Range(0, 3);
         timer = 0f;
         Debug.Log("Planet demanding " + demand.ToString());
+        EventBus.demandItem(demand);
       }
     }
     else
@@ -65,11 +66,14 @@ public class VulcanoController : MonoBehaviour
         demand = ItemController.ItemType.NONE;
         timer = 0f;
         Debug.Log("Planet core stabilized with " + item.ToString() + ". Stability: " + stability);
+        EventBus.dropProcessed("Successfully added " + item.ToString() + " to planet core");
+        EventBus.demandItem(ItemController.ItemType.NONE);
       }
       else
       {
         stability -= 10;
         Debug.Log("Wrong item inserted in planet core. Stability: " + stability);
+        EventBus.dropProcessed("Wrong item added to core. Required: " + demand.ToString());
       }
     }
   }

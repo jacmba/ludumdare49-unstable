@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
   private RocketController rocketController;
   private PlayerController playerController;
   private Transform exitPoint;
+  private GameObject ui;
+  private UIController uiController;
 
   // Start is called before the first frame update
   void Start()
@@ -18,11 +20,15 @@ public class GameController : MonoBehaviour
     EventBus.OnItemCollected += onItemCollected;
     EventBus.OnItemDropped += onItemDropped;
     EventBus.OnVulcanoEntered += onVulcanoEntered;
+    EventBus.OnItemDemand += onItemDemanded;
+    EventBus.OnDropProcessed += onDropProcessed;
 
     rocketController = rocket.GetComponent<RocketController>();
     playerController = player.GetComponent<PlayerController>();
 
     exitPoint = rocket.transform.Find("ExitPoint");
+    ui = GameObject.Find("UI");
+    uiController = ui.GetComponent<UIController>();
   }
 
   /// <summary>
@@ -35,6 +41,8 @@ public class GameController : MonoBehaviour
     EventBus.OnItemCollected -= onItemCollected;
     EventBus.OnItemDropped -= onItemDropped;
     EventBus.OnVulcanoEntered -= onVulcanoEntered;
+    EventBus.OnItemDemand -= onItemDemanded;
+    EventBus.OnDropProcessed -= onDropProcessed;
   }
 
   void onRockenter()
@@ -52,7 +60,9 @@ public class GameController : MonoBehaviour
 
   void onItemCollected(ItemController.ItemType type)
   {
-    Debug.Log("Collected " + type.ToString());
+    string msg = "Collected " + type.ToString();
+    Debug.Log(msg);
+    uiController.notify(msg);
   }
 
   void onItemDropped(ItemController.ItemType type)
@@ -65,7 +75,22 @@ public class GameController : MonoBehaviour
     ItemController.ItemType item = playerController.checkInventory();
     if (item != ItemController.ItemType.NONE)
     {
-      Debug.Log("Press action button to throw " + item.ToString());
+      string msg = "Press action button to throw " + item.ToString();
+      Debug.Log(msg);
+      uiController.notify(msg);
     }
+  }
+
+  void onItemDemanded(ItemController.ItemType type)
+  {
+    if (type != ItemController.ItemType.NONE)
+    {
+      uiController.notify("Required " + type.ToString());
+    }
+  }
+
+  void onDropProcessed(string result)
+  {
+    uiController.notify(result);
   }
 }

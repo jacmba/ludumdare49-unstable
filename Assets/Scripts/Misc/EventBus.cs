@@ -12,6 +12,8 @@ public static class EventBus
   public static event Action OnVulcanoEntered;
   public static event Action<ItemController.ItemType> OnItemCollected;
   public static event Action<ItemController.ItemType> OnItemDropped;
+  public static event Action<ItemController.ItemType> OnItemDemand;
+  public static event Action<string> OnDropProcessed;
 
   public static void enterRocket()
   {
@@ -46,5 +48,15 @@ public static class EventBus
   public static void enterVulcano()
   {
     OnVulcanoEntered?.Invoke();
+  }
+
+  public static void demandItem(ItemController.ItemType type)
+  {
+    OnItemDemand?.Invoke(type);
+  }
+
+  public static void dropProcessed(string result)
+  {
+    OnDropProcessed?.Invoke(result);
   }
 }
