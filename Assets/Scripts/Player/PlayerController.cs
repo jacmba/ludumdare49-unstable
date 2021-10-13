@@ -15,8 +15,10 @@ public class PlayerController : MonoBehaviour
   private Vector3 movDir;
   private Vector3 rotDir;
   private bool canDo;
-  public List<ItemController.ItemType> inventory;
+  public Queue<ItemController.ItemType> inventory;
   private Transform launchSpot;
+
+  private const int INVENTORY_SIZE = 3;
 
   public enum AreaType
   {
@@ -30,7 +32,7 @@ public class PlayerController : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    inventory = new List<ItemController.ItemType>();
+    inventory = new Queue<ItemController.ItemType>();
     body = GetComponent<Rigidbody>();
     movDir = Vector3.zero;
     rotDir = Vector3.zero;
@@ -75,13 +77,13 @@ public class PlayerController : MonoBehaviour
         break;
       case "Item":
         GameObject item = other.gameObject;
-        if (inventory.Count == 0)
+        if (inventory.Count < INVENTORY_SIZE)
         {
           ItemController itemController = item.GetComponent<ItemController>();
           if (!itemController.released)
           {
             GameObject.Destroy(item);
-            inventory.Add(itemController.type);
+            inventory.Enqueue(itemController.type);
             EventBus.collectItem(itemController.type);
           }
         }
@@ -121,16 +123,16 @@ public class PlayerController : MonoBehaviour
 
   public void launchItem()
   {
-    GameObject item = ItemFactory.build(launchSpot, inventory[0], true);
-    item.transform.parent = null;
-    inventory.RemoveAt(0);
+    ItemController.ItemType item = inventory.Dequeue();
+    GameObject itemObj = ItemFactory.build(launchSpot, item, true);
+    itemObj.transform.parent = null;
   }
 
   public ItemController.ItemType checkInventory()
   {
     if (inventory.Count > 0)
     {
-      return inventory[0];
+      return inventory.Peek();
     }
     else
     {
