@@ -58,6 +58,9 @@ public class VulcanoController : MonoBehaviour
     if (demand == ItemController.ItemType.NONE)
     {
       craft.Add(item);
+      Debug.Log("Crafting " + craft.ToString());
+
+      EventBus.craftItem(craft);
     }
     else
     {

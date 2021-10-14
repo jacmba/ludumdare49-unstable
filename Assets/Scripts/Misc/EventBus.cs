@@ -14,6 +14,7 @@ public static class EventBus
   public static event Action<ItemController.ItemType> OnItemDropped;
   public static event Action<ItemController.ItemType> OnItemDemand;
   public static event Action<string> OnDropProcessed;
+  public static event Action<List<ItemController.ItemType>> OnItemCrafted;
 
   public static void enterRocket()
   {
@@ -58,5 +59,10 @@ public static class EventBus
   public static void dropProcessed(string result)
   {
     OnDropProcessed?.Invoke(result);
+  }
+
+  public static void craftItem(List<ItemController.ItemType> list)
+  {
+    OnItemCrafted?.Invoke(list);
   }
 }
