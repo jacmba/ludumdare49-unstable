@@ -61,6 +61,7 @@
      <Compile Include="Assets\Scripts\Planet\INoiseFilter.cs" />
      <Compile Include="Assets\Scripts\Misc\SmokeVisibility.cs" />
      <Compile Include="Assets\Scripts\Misc\VulcanoController.cs" />
+     <Compile Include="Assets\Scripts\UI\UIInventoryController.cs" />
      <Compile Include="Assets\Scripts\UI\UIController.cs" />
      <Compile Include="Assets\Scripts\UI\NotificationController.cs" />
      <Compile Include="Assets\Scripts\UI\UIItemDemandController.cs" />

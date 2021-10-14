@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
   private bool canDo;
   public Queue<ItemController.ItemType> inventory;
   private Transform launchSpot;
+  private float lastCollect;
 
   private const int INVENTORY_SIZE = 3;
 
@@ -38,6 +39,7 @@ public class PlayerController : MonoBehaviour
     rotDir = Vector3.zero;
     areaType = AreaType.NONE;
     canDo = true;
+    lastCollect = float.MinValue;
     launchSpot = transform.Find("LaunchSpot");
   }
 
@@ -77,8 +79,9 @@ public class PlayerController : MonoBehaviour
         break;
       case "Item":
         GameObject item = other.gameObject;
-        if (inventory.Count < INVENTORY_SIZE)
+        if (inventory.Count < INVENTORY_SIZE && Time.time - lastCollect > 1)
         {
+          lastCollect = Time.time;
           ItemController itemController = item.GetComponent<ItemController>();
           if (!itemController.released)
           {
