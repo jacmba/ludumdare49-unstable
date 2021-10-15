@@ -9,12 +9,19 @@ public class GameController : MonoBehaviour
   private RocketController rocketController;
   private PlayerController playerController;
   private Transform exitPoint;
+  private Transform winSpot;
   private GameObject ui;
   private UIController uiController;
+  private CamController cam;
+  private bool won;
+
+  private const float WIN_ROT_SPEED = 10f;
 
   // Start is called before the first frame update
   void Start()
   {
+    won = false;
+
     EventBus.OnRocketEnter += onRockenter;
     EventBus.OnRocketExit += onRocketExit;
     EventBus.OnItemCollected += onItemCollected;
@@ -22,13 +29,24 @@ public class GameController : MonoBehaviour
     EventBus.OnVulcanoEntered += onVulcanoEntered;
     EventBus.OnItemDemand += onItemDemanded;
     EventBus.OnDropProcessed += onDropProcessed;
+    EventBus.OnWin += onWin;
 
     rocketController = rocket.GetComponent<RocketController>();
     playerController = player.GetComponent<PlayerController>();
 
     exitPoint = rocket.transform.Find("ExitPoint");
+    winSpot = transform.Find("WinCamSpot");
     ui = GameObject.Find("UI");
     uiController = ui.GetComponent<UIController>();
+    cam = Camera.main.GetComponent<CamController>();
+  }
+
+  void Update()
+  {
+    if (won)
+    {
+      transform.Rotate(Vector3.up * WIN_ROT_SPEED * Time.deltaTime, Space.Self);
+    }
   }
 
   /// <summary>
@@ -43,6 +61,7 @@ public class GameController : MonoBehaviour
     EventBus.OnVulcanoEntered -= onVulcanoEntered;
     EventBus.OnItemDemand -= onItemDemanded;
     EventBus.OnDropProcessed -= onDropProcessed;
+    EventBus.OnWin -= onWin;
   }
 
   void onRockenter()
@@ -92,5 +111,11 @@ public class GameController : MonoBehaviour
   void onDropProcessed(string result)
   {
     uiController.notify(result);
+  }
+
+  void onWin()
+  {
+    won = true;
+    ui.SetActive(false);
   }
 }

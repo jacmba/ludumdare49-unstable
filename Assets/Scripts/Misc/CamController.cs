@@ -8,8 +8,8 @@ public class CamController : MonoBehaviour
   [SerializeField] private Transform rocketStillSpot;
   [SerializeField] private Transform rocketChaseSpot;
   [SerializeField] private Transform landSpot;
+  [SerializeField] private Transform winSpot;
   [SerializeField] private float translateSpeed = 2f;
-  [SerializeField] private float rotationSpeed = 5f;
   private Transform spot;
   private Transform target;
   private bool transition;
@@ -24,6 +24,7 @@ public class CamController : MonoBehaviour
     EventBus.OnRocketExit += OnRocketExit;
     EventBus.OnLitfOff += OnLiftOff;
     EventBus.OnRocketLanding += OnRocketLanding;
+    EventBus.OnWin += OnWin;
   }
 
   void OnDestroy()
@@ -32,6 +33,7 @@ public class CamController : MonoBehaviour
     EventBus.OnRocketExit -= OnRocketExit;
     EventBus.OnLitfOff -= OnLiftOff;
     EventBus.OnRocketLanding -= OnRocketLanding;
+    EventBus.OnWin -= OnWin;
   }
 
   // Update is called once per frame
@@ -50,7 +52,7 @@ public class CamController : MonoBehaviour
     transform.rotation = spot.rotation;
   }
 
-  private void changeSpot(Transform s)
+  public void changeSpot(Transform s)
   {
     transition = true;
     spot = s;
@@ -75,5 +77,10 @@ public class CamController : MonoBehaviour
   private void OnRocketLanding()
   {
     changeSpot(landSpot);
+  }
+
+  private void OnWin()
+  {
+    changeSpot(winSpot);
   }
 }

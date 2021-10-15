@@ -8,6 +8,7 @@ public class VulcanoController : MonoBehaviour
   private List<ItemController.ItemType> craft;
   private ItemController.ItemType demand;
   private float timer;
+  private bool finished;
 
   private const float DEMAND_TIME = 5f * 60f;
   private const float STAB_TIMER = 30f;
@@ -21,6 +22,7 @@ public class VulcanoController : MonoBehaviour
     timer = DEMAND_TIME * .75f;
 
     EventBus.OnItemDropped += onItemDropped;
+    finished = false;
   }
 
   void OnDestroy()
@@ -31,6 +33,10 @@ public class VulcanoController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    if (finished)
+    {
+      return;
+    }
     timer += Time.deltaTime;
     if (demand == ItemController.ItemType.NONE)
     {
@@ -62,6 +68,11 @@ public class VulcanoController : MonoBehaviour
       Debug.Log("Crafting " + craft.ToString());
 
       EventBus.craftItem(craft);
+
+      if (craft.Count >= 3)
+      {
+        StartCoroutine(makeCraft());
+      }
     }
     else
     {
@@ -81,5 +92,31 @@ public class VulcanoController : MonoBehaviour
         EventBus.changeStability(stability);
       }
     }
+  }
+
+  IEnumerator makeCraft()
+  {
+    yield return new WaitForSeconds(5f);
+
+    if (craft[0] == ItemController.ItemType.HYDROGEN && craft[1] == ItemController.ItemType.HYDROGEN
+      && craft[2] == ItemController.ItemType.OXYGEN)
+    {
+      finished = true;
+      string msg = "Water crafted, planet core calmed down!";
+      Debug.Log(msg);
+      EventBus.notify(msg);
+
+      yield return new WaitForSeconds(3f);
+      EventBus.win();
+    }
+    else
+    {
+      string msg = "Useless sequence crafted";
+      Debug.Log(msg);
+      EventBus.notify(msg);
+    }
+
+    craft.Clear();
+    EventBus.craftItem(craft);
   }
 }

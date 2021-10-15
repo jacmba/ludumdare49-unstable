@@ -15,6 +15,13 @@ public class UIController : MonoBehaviour
     canvas = transform.Find("Canvas");
     notificationPanel = canvas.Find("NotificationPanel");
     notificationText = notificationPanel.GetComponentInChildren<Text>();
+
+    EventBus.OnNotify += notify;
+  }
+
+  void OnDestroy()
+  {
+    EventBus.OnNotify -= notify;
   }
 
   public void notify(string text)

@@ -16,6 +16,8 @@ public static class EventBus
   public static event Action<string> OnDropProcessed;
   public static event Action<List<ItemController.ItemType>> OnItemCrafted;
   public static event Action<int> OnStabilityChanged;
+  public static event Action<string> OnNotify;
+  public static event Action OnWin;
 
   public static void enterRocket()
   {
@@ -70,5 +72,15 @@ public static class EventBus
   public static void changeStability(int s)
   {
     OnStabilityChanged?.Invoke(s);
+  }
+
+  public static void notify(string msg)
+  {
+    OnNotify?.Invoke(msg);
+  }
+
+  public static void win()
+  {
+    OnWin?.Invoke();
   }
 }

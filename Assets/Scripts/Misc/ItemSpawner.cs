@@ -7,7 +7,7 @@ public class ItemSpawner : MonoBehaviour
   [SerializeField] private ItemController.ItemType type;
   private List<Transform> points;
   private float timer;
-  private const float TIME_LIMIT = 5f;
+  private const float TIME_LIMIT = 10f;
 
   private GameObject item;
 
