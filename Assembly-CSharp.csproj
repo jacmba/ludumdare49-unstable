@@ -66,6 +66,8 @@
      <Compile Include="Assets\Scripts\UI\NotificationController.cs" />
      <Compile Include="Assets\Scripts\UI\UIItemDemandController.cs" />
      <Compile Include="Assets\Scripts\UI\UIItemCraftController.cs" />
+     <Compile Include="Assets\Scripts\UI\GaugeBarController.cs" />
+     <Compile Include="Assets\Scripts\UI\StabilityBarController.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/jacinto/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

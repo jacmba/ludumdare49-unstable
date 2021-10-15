@@ -49,6 +49,7 @@ public class VulcanoController : MonoBehaviour
         stability--;
         timer = 0f;
         Debug.Log("Stability decreased: " + stability);
+        EventBus.changeStability(stability);
       }
     }
   }
@@ -77,6 +78,7 @@ public class VulcanoController : MonoBehaviour
         stability -= 10;
         Debug.Log("Wrong item inserted in planet core. Stability: " + stability);
         EventBus.dropProcessed("Wrong item added to core. Required: " + demand.ToString());
+        EventBus.changeStability(stability);
       }
     }
   }
