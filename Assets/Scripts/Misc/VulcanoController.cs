@@ -9,6 +9,11 @@ public class VulcanoController : MonoBehaviour
   private ItemController.ItemType demand;
   private float timer;
   private bool finished;
+  private Transform emitter;
+  private float pyroTimer;
+  private float pyroTimeLimit;
+  private GameObject pyroPrefab;
+
 
   private const float DEMAND_TIME = 5f * 60f;
   private const float STAB_TIMER = 30f;
@@ -23,6 +28,10 @@ public class VulcanoController : MonoBehaviour
 
     EventBus.OnItemDropped += onItemDropped;
     finished = false;
+
+    emitter = transform.Find("SmokeEmitter");
+    pyroPrefab = Resources.Load<GameObject>("Prefabs/Pyroclast");
+    pyroChrono();
   }
 
   void OnDestroy()
@@ -57,6 +66,15 @@ public class VulcanoController : MonoBehaviour
         Debug.Log("Stability decreased: " + stability);
         EventBus.changeStability(stability);
       }
+    }
+
+    pyroTimer += Time.deltaTime;
+    if (pyroTimer >= pyroTimeLimit)
+    {
+      var pyroclast = GameObject.Instantiate(pyroPrefab, emitter.position, emitter.rotation);
+      var pyroBody = pyroclast.GetComponent<Rigidbody>();
+      pyroBody.AddForce(Random.Range(-5000f, 5000f), Random.Range(5000f, 15000f), Random.Range(-5000f, 5000f));
+      pyroChrono();
     }
   }
 
@@ -118,5 +136,11 @@ public class VulcanoController : MonoBehaviour
 
     craft.Clear();
     EventBus.craftItem(craft);
+  }
+
+  void pyroChrono()
+  {
+    pyroTimer = 0;
+    pyroTimeLimit = Random.Range(1, 10);
   }
 }

@@ -14,7 +14,6 @@ public class GameController : MonoBehaviour
   private UIController uiController;
   private CamController cam;
   private bool won;
-
   private const float WIN_ROT_SPEED = 10f;
 
   // Start is called before the first frame update

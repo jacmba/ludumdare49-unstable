@@ -8,6 +8,7 @@ TagManager:
   - Item
   - Vulcano
   - UI
+  - Lava
   layers:
   - Default
   - TransparentFX
