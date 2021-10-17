@@ -73,7 +73,16 @@ public class VulcanoController : MonoBehaviour
     {
       var pyroclast = GameObject.Instantiate(pyroPrefab, emitter.position, emitter.rotation);
       var pyroBody = pyroclast.GetComponent<Rigidbody>();
-      pyroBody.AddForce(Random.Range(-5000f, 5000f), Random.Range(5000f, 15000f), Random.Range(-5000f, 5000f));
+      Vector3 force = new Vector3(Random.Range(1500f, 5000f), Random.Range(5000f, 10000f), Random.Range(1500f, 5000f));
+      if (Random.Range(1f, 2f) < 1.5f)
+      {
+        force.x *= -1;
+      }
+      if (Random.Range(1f, 2f) < 1.5f)
+      {
+        force.z *= -1;
+      }
+      pyroBody.AddForce(force);
       pyroChrono();
     }
   }

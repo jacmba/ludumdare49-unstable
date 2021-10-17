@@ -17,7 +17,7 @@ public class GravityAttractor : MonoBehaviour
     planet = GetComponent<Planet>();
   }
 
-  public void attract(Transform body)
+  public void attract(Transform body, bool rotate = true)
   {
     Vector3 gravityUp = (body.position - transform.position).normalized;
     Vector3 bodyUp = body.up;
@@ -36,7 +36,10 @@ public class GravityAttractor : MonoBehaviour
       rb.AddForce(gravityUp * attractionForce);
     }
 
-    Quaternion targetRotation = Quaternion.FromToRotation(bodyUp, gravityUp) * body.rotation;
-    body.rotation = Quaternion.Slerp(body.rotation, targetRotation, 150f * Time.deltaTime);
+    if (rotate)
+    {
+      Quaternion targetRotation = Quaternion.FromToRotation(bodyUp, gravityUp) * body.rotation;
+      body.rotation = Quaternion.Slerp(body.rotation, targetRotation, 150f * Time.deltaTime);
+    }
   }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 public class GravityBody : MonoBehaviour
 {
   [SerializeField] private GravityAttractor currentAttractor;
+  [SerializeField] private bool rotate = true;
   private GameObject[] attractors;
   private Rigidbody body;
 
@@ -15,7 +16,10 @@ public class GravityBody : MonoBehaviour
   {
     Rigidbody body = GetComponent<Rigidbody>();
     body.useGravity = false;
-    body.constraints = RigidbodyConstraints.FreezeRotation;
+    if (rotate)
+    {
+      body.constraints = RigidbodyConstraints.FreezeRotation;
+    }
     attractors = GameObject.FindGameObjectsWithTag("Planet");
   }
 
@@ -34,7 +38,7 @@ public class GravityBody : MonoBehaviour
   {
     if (currentAttractor != null)
     {
-      currentAttractor.attract(transform);
+      currentAttractor.attract(transform, rotate);
     }
   }
 }
