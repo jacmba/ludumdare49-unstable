@@ -15,9 +15,14 @@ public class PlayerController : MonoBehaviour
   private Vector3 movDir;
   private Vector3 rotDir;
   private bool canDo;
+  private bool canDamage;
+  private float damageTimer;
+  private float damageTimeLimit;
   public Queue<ItemController.ItemType> inventory;
   private Transform launchSpot;
   private float lastCollect;
+  private Animator animator;
+  private int health;
 
   private const int INVENTORY_SIZE = 3;
 
@@ -35,12 +40,16 @@ public class PlayerController : MonoBehaviour
   {
     inventory = new Queue<ItemController.ItemType>();
     body = GetComponent<Rigidbody>();
+    animator = GetComponentInChildren<Animator>();
     movDir = Vector3.zero;
     rotDir = Vector3.zero;
     areaType = AreaType.NONE;
     canDo = true;
+    canDamage = true;
+    damageTimeLimit = 3f;
     lastCollect = float.MinValue;
     launchSpot = transform.Find("LaunchSpot");
+    health = 100;
   }
 
   // Update is called once per frame
@@ -48,6 +57,10 @@ public class PlayerController : MonoBehaviour
   {
     movDir = (Vector3.forward * Input.GetAxis("Vertical")).normalized;
     rotDir = Vector3.up * Input.GetAxis("Horizontal");
+
+    bool running = Math.Abs(Input.GetAxis("Vertical")) > .1f;
+
+    animator.SetBool("Running", running);
 
     if (Input.GetButtonUp("Fire1"))
     {
@@ -59,6 +72,15 @@ public class PlayerController : MonoBehaviour
       canDo = false;
       doStuff();
     }
+
+    if (!canDamage)
+    {
+      damageTimer += Time.deltaTime;
+      if (damageTimer >= damageTimeLimit)
+      {
+        canDamage = true;
+      }
+    }
   }
 
   /// <summary>
@@ -68,6 +90,15 @@ public class PlayerController : MonoBehaviour
   {
     body.MovePosition(body.position + transform.TransformDirection(movDir) * movSpeed * Time.deltaTime);
     transform.Rotate(rotDir * rotSpeed * Time.deltaTime);
+  }
+
+  void OnCollisionStay(Collision other)
+  {
+    Damager damager = other.gameObject.GetComponent<Damager>();
+    if (damager != null && canDamage)
+    {
+      damage(damager.damage);
+    }
   }
 
   void OnTriggerEnter(Collider other)
@@ -141,5 +172,18 @@ public class PlayerController : MonoBehaviour
     {
       return ItemController.ItemType.NONE;
     }
+  }
+
+  void damage(int d)
+  {
+    health -= d;
+    if (health <= 0)
+    {
+      health = 0;
+    }
+    damageTimer = 0f;
+    canDamage = false;
+
+    EventBus.changeHealth(health);
   }
 }

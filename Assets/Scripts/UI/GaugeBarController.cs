@@ -24,6 +24,14 @@ public class GaugeBarController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
+    if (value < minValue)
+    {
+      value = minValue;
+    }
+    if (value > maxValue)
+    {
+      value = maxValue;
+    }
     int v = (int)(((float)value / (maxValue - minValue)) * imgLength);
     Vector2 size = new Vector2(v, imgHeight);
     foreground.sizeDelta = size;

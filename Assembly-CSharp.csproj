@@ -36,39 +36,41 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\UI\UIController.cs" />
      <Compile Include="Assets\Scripts\Misc\CamController.cs" />
+     <Compile Include="Assets\Scripts\UI\GaugeBarController.cs" />
      <Compile Include="Assets\Scripts\Physics\GravityAttractor.cs" />
      <Compile Include="Assets\Scripts\Planet\TerrainFace.cs" />
      <Compile Include="Assets\Scripts\Planet\ColorSettings.cs" />
      <Compile Include="Assets\Scripts\Misc\EventBus.cs" />
+     <Compile Include="Assets\Scripts\UI\StabilityBarController.cs" />
      <Compile Include="Assets\Scripts\Physics\GravityBody.cs" />
+     <Compile Include="Assets\Scripts\Misc\PyroclastController.cs" />
      <Compile Include="Assets\Scripts\Misc\ItemFactory.cs" />
+     <Compile Include="Assets\Scripts\UI\UIItemDemandController.cs" />
      <Compile Include="Assets\Scripts\Player\RocketController.cs" />
      <Compile Include="Assets\Scripts\Planet\NoiseSettings.cs" />
      <Compile Include="Assets\Scripts\Planet\MinMax.cs" />
      <Compile Include="Assets\Scripts\Planet\RigidNoiseFilter.cs" />
+     <Compile Include="Assets\Scripts\UI\UIItemCraftController.cs" />
      <Compile Include="Assets\Scripts\Misc\ItemSpawner.cs" />
      <Compile Include="Assets\Scripts\Planet\ShapeSettings.cs" />
      <Compile Include="Assets\Scripts\Planet\ColorGenerator.cs" />
+     <Compile Include="Assets\Scripts\UI\NotificationController.cs" />
      <Compile Include="Assets\Scripts\Misc\GameController.cs" />
      <Compile Include="Assets\Scripts\Planet\ShapeGenerator.cs" />
+     <Compile Include="Assets\Scripts\UI\UIInventoryController.cs" />
      <Compile Include="Assets\Scripts\Planet\NoiseFilter.cs" />
      <Compile Include="Assets\Scripts\Planet\Planet.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\Misc\VulcanoController.cs" />
      <Compile Include="Assets\Scripts\Planet\Noise.cs" />
      <Compile Include="Assets\Scripts\Misc\ItemController.cs" />
      <Compile Include="Assets\Scripts\Planet\NoiseFilterFactory.cs" />
      <Compile Include="Assets\Scripts\Planet\INoiseFilter.cs" />
      <Compile Include="Assets\Scripts\Misc\SmokeVisibility.cs" />
-     <Compile Include="Assets\Scripts\Misc\VulcanoController.cs" />
-     <Compile Include="Assets\Scripts\UI\UIInventoryController.cs" />
-     <Compile Include="Assets\Scripts\UI\UIController.cs" />
-     <Compile Include="Assets\Scripts\UI\NotificationController.cs" />
-     <Compile Include="Assets\Scripts\UI\UIItemDemandController.cs" />
-     <Compile Include="Assets\Scripts\UI\UIItemCraftController.cs" />
-     <Compile Include="Assets\Scripts\UI\GaugeBarController.cs" />
-     <Compile Include="Assets\Scripts\UI\StabilityBarController.cs" />
-     <Compile Include="Assets\Scripts\Misc\PyroclastController.cs" />
+     <Compile Include="Assets\Scripts\UI\HealthBarController.cs" />
+     <Compile Include="Assets\Scripts\Misc\Damager.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/jacinto/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
