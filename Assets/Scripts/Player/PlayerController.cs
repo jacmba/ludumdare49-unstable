@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
   private Vector3 movDir;
   private Vector3 rotDir;
   private bool canDo;
+  private bool canMove;
   private bool canDamage;
   private float damageTimer;
   private float damageTimeLimit;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
     rotDir = Vector3.zero;
     areaType = AreaType.NONE;
     canDo = true;
+    canMove = true;
     canDamage = true;
     damageTimeLimit = 3f;
     lastCollect = float.MinValue;
@@ -55,22 +57,25 @@ public class PlayerController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    movDir = (Vector3.forward * Input.GetAxis("Vertical")).normalized;
-    rotDir = Vector3.up * Input.GetAxis("Horizontal");
-
-    bool running = Math.Abs(Input.GetAxis("Vertical")) > .1f;
-
-    animator.SetBool("Running", running);
-
-    if (Input.GetButtonUp("Fire1"))
+    if (canMove)
     {
-      canDo = true;
-    }
+      movDir = (Vector3.forward * Input.GetAxis("Vertical")).normalized;
+      rotDir = Vector3.up * Input.GetAxis("Horizontal");
 
-    if (Input.GetButtonDown("Fire1") && canDo)
-    {
-      canDo = false;
-      doStuff();
+      bool running = Math.Abs(Input.GetAxis("Vertical")) > .1f;
+
+      animator.SetBool("Running", running);
+
+      if (Input.GetButtonUp("Fire1"))
+      {
+        canDo = true;
+      }
+
+      if (Input.GetButtonDown("Fire1") && canDo)
+      {
+        canDo = false;
+        doStuff();
+      }
     }
 
     if (!canDamage)
@@ -88,8 +93,11 @@ public class PlayerController : MonoBehaviour
   /// </summary>
   void FixedUpdate()
   {
-    body.MovePosition(body.position + transform.TransformDirection(movDir) * movSpeed * Time.deltaTime);
-    transform.Rotate(rotDir * rotSpeed * Time.deltaTime);
+    if (canMove)
+    {
+      body.MovePosition(body.position + transform.TransformDirection(movDir) * movSpeed * Time.deltaTime);
+      transform.Rotate(rotDir * rotSpeed * Time.deltaTime);
+    }
   }
 
   void OnCollisionStay(Collision other)
@@ -176,6 +184,8 @@ public class PlayerController : MonoBehaviour
 
   void damage(int d)
   {
+    canMove = false;
+    animator.SetBool("Running", false);
     health -= d;
     if (health <= 0)
     {
@@ -185,5 +195,21 @@ public class PlayerController : MonoBehaviour
     canDamage = false;
 
     EventBus.changeHealth(health);
+
+    if (health == 0)
+    {
+      animator.SetTrigger("Die");
+      EventBus.diePlayer();
+      enabled = false;
+    }
+    else
+    {
+      animator.SetTrigger("Damage");
+    }
+  }
+
+  public void recoverMovement()
+  {
+    canMove = true;
   }
 }

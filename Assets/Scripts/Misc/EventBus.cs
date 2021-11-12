@@ -20,6 +20,7 @@ public static class EventBus
   public static event Action<int> OnHealthChanged;
   public static event Action<string> OnNotify;
   public static event Action OnWin;
+  public static event Action OnPlayerDie;
 
   public static void enterRocket()
   {
@@ -89,5 +90,10 @@ public static class EventBus
   public static void win()
   {
     OnWin?.Invoke();
+  }
+
+  public static void diePlayer()
+  {
+    OnPlayerDie?.Invoke();
   }
 }
