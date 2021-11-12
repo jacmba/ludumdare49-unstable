@@ -14,6 +14,7 @@ public class RocketController : MonoBehaviour
   private float vs;
   private float radioAlt;
   private Transform altSensor;
+  private GameObject flame;
 
   public enum RocketStatus
   {
@@ -29,6 +30,7 @@ public class RocketController : MonoBehaviour
     status = RocketStatus.GROUNDED;
     radioAlt = 0f;
     altSensor = transform.Find("AltSensor");
+    flame = transform.Find("Gfx").Find("Flame").gameObject;
   }
 
   void OnEnable()
@@ -74,6 +76,10 @@ public class RocketController : MonoBehaviour
     if (thrust < 0)
     {
       thrust = 0;
+    }
+    else if (thrust > 0 && status == RocketStatus.GROUNDED)
+    {
+      flame.SetActive(true);
     }
 
     rotDir = (Input.GetAxis("Horizontal") * Vector3.back + Input.GetAxis("Vertical") * Vector3.right).normalized;
@@ -133,6 +139,7 @@ public class RocketController : MonoBehaviour
     {
       status = RocketStatus.GROUNDED;
       body.velocity = Vector3.zero;
+      flame.SetActive(false);
     }
   }
 }
