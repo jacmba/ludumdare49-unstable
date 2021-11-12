@@ -9,7 +9,7 @@ public class PyroclastController : MonoBehaviour
   private Vector3 rotSpeed;
   private Rigidbody body;
 
-  private const float TIME_LIMIT = 3f;
+  private const float TIME_LIMIT = 10f;
 
   // Start is called before the first frame update
   void Start()
