@@ -15,6 +15,12 @@ public class RocketController : MonoBehaviour
   private float radioAlt;
   private Transform altSensor;
   private GameObject flame;
+  private AudioSource sound;
+
+  [SerializeField] private AudioClip rocketSound;
+  [SerializeField] private AudioClip enterSound;
+  [SerializeField] private AudioClip exitSound;
+  [SerializeField] private AudioClip landingSound;
 
   public enum RocketStatus
   {
@@ -31,10 +37,18 @@ public class RocketController : MonoBehaviour
     radioAlt = 0f;
     altSensor = transform.Find("AltSensor");
     flame = transform.Find("Gfx").Find("Flame").gameObject;
+    sound = GetComponent<AudioSource>();
   }
 
   void OnEnable()
   {
+    if (sound.isPlaying)
+    {
+      sound.Stop();
+    }
+    sound.clip = enterSound;
+    sound.loop = false;
+    sound.Play();
     body = GetComponent<Rigidbody>();
     canExit = false;
     gravityBody.enabled = false;
@@ -60,6 +74,13 @@ public class RocketController : MonoBehaviour
       {
         case RocketStatus.GROUNDED:
           EventBus.exitRocket();
+          if (sound.isPlaying)
+          {
+            sound.Stop();
+          }
+          sound.clip = exitSound;
+          sound.loop = false;
+          sound.Play();
           break;
         case RocketStatus.FLIGHT:
           if (radioAlt < 100f)
@@ -80,6 +101,12 @@ public class RocketController : MonoBehaviour
     else if (thrust > 0 && status == RocketStatus.GROUNDED)
     {
       flame.SetActive(true);
+      if (sound.clip != rocketSound || !sound.isPlaying)
+      {
+        sound.clip = rocketSound;
+        sound.loop = true;
+        sound.Play();
+      }
     }
 
     rotDir = (Input.GetAxis("Horizontal") * Vector3.back + Input.GetAxis("Vertical") * Vector3.right).normalized;
@@ -140,6 +167,14 @@ public class RocketController : MonoBehaviour
       status = RocketStatus.GROUNDED;
       body.velocity = Vector3.zero;
       flame.SetActive(false);
+
+      if (sound.isPlaying)
+      {
+        sound.Stop();
+      }
+      sound.clip = landingSound;
+      sound.loop = false;
+      sound.Play();
     }
   }
 }

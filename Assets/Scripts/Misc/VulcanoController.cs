@@ -13,6 +13,7 @@ public class VulcanoController : MonoBehaviour
   private float pyroTimer;
   private float pyroTimeLimit;
   private GameObject pyroPrefab;
+  private AudioSource sound;
 
 
   private const float DEMAND_TIME = 5f * 60f;
@@ -31,6 +32,7 @@ public class VulcanoController : MonoBehaviour
 
     emitter = transform.Find("SmokeEmitter");
     pyroPrefab = Resources.Load<GameObject>("Prefabs/Pyroclast");
+    sound = GetComponent<AudioSource>();
     pyroChrono();
   }
 
@@ -44,7 +46,15 @@ public class VulcanoController : MonoBehaviour
   {
     if (finished)
     {
+      if (sound.isPlaying)
+      {
+        sound.Stop();
+      }
       return;
+    }
+    if (!sound.isPlaying)
+    {
+      sound.Play();
     }
     timer += Time.deltaTime;
     if (demand == ItemController.ItemType.NONE)
