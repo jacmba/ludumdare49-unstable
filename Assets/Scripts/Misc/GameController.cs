@@ -16,6 +16,16 @@ public class GameController : MonoBehaviour
   private bool won;
   private const float WIN_ROT_SPEED = 10f;
 
+  [System.Serializable]
+  public class ItemSoundMap
+  {
+    public AudioClip sound;
+    public ItemController.ItemType type;
+  }
+
+  [SerializeField] private ItemSoundMap[] itemSounds;
+  private AudioSource sound;
+
   // Start is called before the first frame update
   void Start()
   {
@@ -38,6 +48,7 @@ public class GameController : MonoBehaviour
     ui = GameObject.Find("UI");
     uiController = ui.GetComponent<UIController>();
     cam = Camera.main.GetComponent<CamController>();
+    sound = GetComponent<AudioSource>();
   }
 
   void Update()
@@ -104,6 +115,9 @@ public class GameController : MonoBehaviour
     if (type != ItemController.ItemType.NONE)
     {
       uiController.notify("Required " + type.ToString());
+      ItemSoundMap itemSound = itemSounds[(int)type];
+      sound.clip = itemSound.sound;
+      sound.Play();
     }
   }
 

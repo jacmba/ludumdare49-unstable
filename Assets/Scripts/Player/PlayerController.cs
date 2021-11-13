@@ -6,10 +6,11 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-  [SerializeField]
-  private float movSpeed = 15f;
-  [SerializeField]
-  private float rotSpeed = 20f;
+  [SerializeField] private float movSpeed = 15f;
+  [SerializeField] private float rotSpeed = 20f;
+  [SerializeField] private AudioClip damageSound;
+  [SerializeField] private AudioClip dieSound;
+  private AudioSource sound;
 
   private Rigidbody body;
   private Vector3 movDir;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
     inventory = new Queue<ItemController.ItemType>();
     body = GetComponent<Rigidbody>();
     animator = GetComponentInChildren<Animator>();
+    sound = GetComponent<AudioSource>();
     movDir = Vector3.zero;
     rotDir = Vector3.zero;
     areaType = AreaType.NONE;
@@ -200,11 +202,15 @@ public class PlayerController : MonoBehaviour
     {
       animator.SetTrigger("Die");
       EventBus.diePlayer();
+      sound.clip = dieSound;
+      sound.Play();
       enabled = false;
     }
     else
     {
       animator.SetTrigger("Damage");
+      sound.clip = damageSound;
+      sound.Play();
     }
   }
 
