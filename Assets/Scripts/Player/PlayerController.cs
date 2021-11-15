@@ -157,7 +157,7 @@ public class PlayerController : MonoBehaviour
       case AreaType.VULCANO:
         if (inventory.Count > 0)
         {
-          launchItem();
+          animator.SetTrigger("Throw");
         }
         break;
       default:

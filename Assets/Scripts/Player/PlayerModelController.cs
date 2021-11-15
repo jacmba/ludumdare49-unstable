@@ -23,4 +23,9 @@ public class PlayerModelController : MonoBehaviour
   {
     sound.Play();
   }
+
+  public void throwItem()
+  {
+    player.launchItem();
+  }
 }
