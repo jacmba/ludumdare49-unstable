@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PyroclastController : MonoBehaviour
 {
+  [SerializeField] private AudioClip launchSound;
+  [SerializeField] private AudioClip fallSound;
+  private AudioSource sound;
   private float timer;
   private bool touched;
   private Vector3 rotSpeed;
@@ -18,8 +21,14 @@ public class PyroclastController : MonoBehaviour
     touched = false;
     rotSpeed = new Vector3(rand(), rand(), rand());
 
+    transform.localScale = transform.localScale * Random.Range(.5f, 1f);
+
     body = GetComponent<Rigidbody>();
     body.angularVelocity = rotSpeed;
+
+    sound = GetComponent<AudioSource>();
+    sound.clip = launchSound;
+    sound.Play();
   }
 
   // Update is called once per frame
@@ -38,6 +47,8 @@ public class PyroclastController : MonoBehaviour
   void OnCollisionEnter(Collision other)
   {
     touched = true;
+    sound.clip = fallSound;
+    sound.Play();
   }
 
   private float rand()
