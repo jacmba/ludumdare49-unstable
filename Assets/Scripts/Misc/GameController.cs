@@ -6,6 +6,10 @@ public class GameController : MonoBehaviour
 {
   [SerializeField] private GameObject player;
   [SerializeField] private GameObject rocket;
+  [SerializeField] private AudioClip itemPickSound;
+  [SerializeField] private AudioClip itemDropSound;
+  [SerializeField] private AudioClip itemCraftSound;
+  private AudioSource sound;
   private RocketController rocketController;
   private PlayerController playerController;
   private Transform exitPoint;
@@ -24,7 +28,6 @@ public class GameController : MonoBehaviour
   }
 
   [SerializeField] private ItemSoundMap[] itemSounds;
-  private AudioSource sound;
 
   // Start is called before the first frame update
   void Start()
@@ -38,6 +41,7 @@ public class GameController : MonoBehaviour
     EventBus.OnVulcanoEntered += onVulcanoEntered;
     EventBus.OnItemDemand += onItemDemanded;
     EventBus.OnDropProcessed += onDropProcessed;
+    EventBus.OnItemCrafted += onItemCrafted;
     EventBus.OnWin += onWin;
 
     rocketController = rocket.GetComponent<RocketController>();
@@ -71,6 +75,7 @@ public class GameController : MonoBehaviour
     EventBus.OnVulcanoEntered -= onVulcanoEntered;
     EventBus.OnItemDemand -= onItemDemanded;
     EventBus.OnDropProcessed -= onDropProcessed;
+    EventBus.OnItemCrafted -= onItemCrafted;
     EventBus.OnWin -= onWin;
   }
 
@@ -92,11 +97,21 @@ public class GameController : MonoBehaviour
     string msg = "Collected " + type.ToString();
     Debug.Log(msg);
     uiController.notify(msg);
+    sound.clip = itemPickSound;
+    sound.Play();
   }
 
   void onItemDropped(ItemController.ItemType type)
   {
     Debug.Log("Dropped " + type.ToString());
+    sound.clip = itemDropSound;
+    sound.Play();
+  }
+
+  void onItemCrafted(List<ItemController.ItemType> craft)
+  {
+    sound.clip = itemCraftSound;
+    sound.Play();
   }
 
   void onVulcanoEntered()
