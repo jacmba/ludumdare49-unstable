@@ -72,6 +72,7 @@
      <Compile Include="Assets\Scripts\UI\HealthBarController.cs" />
      <Compile Include="Assets\Scripts\Misc\Damager.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerModelController.cs" />
+     <Compile Include="Assets\Scripts\Planet\PlanetRotator.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/jacinto/Unity/Hub/Editor/2020.3.14f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

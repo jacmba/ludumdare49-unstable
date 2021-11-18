@@ -52,7 +52,7 @@ public class VulcanoController : MonoBehaviour
       }
       return;
     }
-    if (!sound.isPlaying)
+    else if (!sound.isPlaying)
     {
       sound.Play();
     }
@@ -105,6 +105,7 @@ public class VulcanoController : MonoBehaviour
       Debug.Log("Crafting " + craft.ToString());
 
       EventBus.craftItem(craft);
+      EventBus.notify("Added " + item.ToString() + " to crafting queue");
 
       if (craft.Count >= 3)
       {
