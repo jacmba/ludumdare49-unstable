@@ -39,12 +39,12 @@ public class CamController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    float dist = Mathf.Abs((transform.position - spot.position).magnitude);
+    float dist = Vector3.Distance(transform.position, spot.position);
     if (dist < .5f)
     {
       transition = false;
     }
-    Vector3 targetPos = dist > translateSpeed && transition ?
+    Vector3 targetPos = dist > .5f /*translateSpeed*/ && transition ?
       Vector3.Lerp(transform.position, spot.position, translateSpeed * Time.deltaTime) :
       spot.position;
     transform.position = targetPos;
