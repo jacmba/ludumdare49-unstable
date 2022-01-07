@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TitleScreen.unity
     guid: 1863cb0088b4244a98fbf457e1ff5369
+  - enabled: 1
+    path: Assets/Scenes/PlanetaryScene.unity
+    guid: 8940aeb52f142af4db5fe39815baf549
   m_configObjects: {}
